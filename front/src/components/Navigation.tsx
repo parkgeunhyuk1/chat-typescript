@@ -6,7 +6,7 @@ import { useNavigate } from "react-router-dom";
 import logo from "../assets/logo.png";
 const Navigation = () => {
   const navigate = useNavigate();
-  const user = useSelector((state: any) => state.user);
+  const user = useSelector((state: {user:{name:string,picture:string}}) => state.user);
   const [logoutUser]= useLogoutUserMutation();
   const handleLogout=async(e:React.MouseEvent<HTMLButtonElement>)=>{
     e.preventDefault();

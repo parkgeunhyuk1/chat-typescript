@@ -31,7 +31,7 @@ const MessageForm = () => {
     socket.emit("message-room", roomId, message, user, time, todayDate);
     setMessage("");
   };
-  const user = useSelector((state: {user:[]}) => state.user);
+  const user = useSelector((state: {user:{email:string,_id:string}}) => state.user);
   
   const getFormattedDate = () => {
     const date = new Date();
@@ -47,11 +47,11 @@ const MessageForm = () => {
   };
   const todayDate = getFormattedDate();
 
-  socket.off("room-messages").on("room-messages", (roomMessages: {}) => {
-    console.log("room messages", typeof roomMessages);
+  socket.off("room-messages").on("room-messages", (roomMessages:[]) => {
+    
     setMessages(roomMessages);
   });
-  console.log("이건?", typeof messages);
+  
   return (
     <div>
       <div className="messages-output">
@@ -60,23 +60,14 @@ const MessageForm = () => {
             로그인이 필요한 서비스입니다.
           </div>
         )}
-        
-        {
-          user&&
-         
-          messages.map((item:{_id:string,messagesByDate:{}},idx:number)=>{
-            
-            <div key={idx}>
-              <p className="alert alert-info text-center message-date-indicato">{item._id}</p>
-              </div>
-          })
-        }
-        {/* {user &&
+       
+       
+        {user &&
           messages?.map(
             (
               { _id, messagesByDate }: { _id: string; messagesByDate: any },
               idx: number
-            ) => {
+            ) => (
               <div key={idx}>
                 <p className="alert alert-info text-center message-date-indicator">
                   {_id}
@@ -87,17 +78,49 @@ const MessageForm = () => {
                       content,
                       time,
                       from,
-                    }: { content: string; time: string; from: {} },
+                    }: { content: string; time: string; from: {
+                      email:string,
+                      picture:string,
+                      _id:string,
+                      name:string
+                    } },
                     msgIdx: number
                   ) => (
-                    <div className="message" key={msgIdx}>
-                      <p>{content}</p>
+                    <div
+                    className={
+                      from?.email == user?.email
+                        ? "message"
+                        : "incoming-message"
+                    }
+                    key={msgIdx}
+                  >
+                    <div className="message-inner">
+                      <div className="d-flex align-items-center mb-3">
+                        <img
+                          src={from.picture}
+                          style={{
+                            width: 35,
+                            height: 35,
+                            objectFit: "cover",
+                            borderRadius: "50%",
+                            marginRight: 10,
+                          }}
+                        />
+                        <p className="message-sender">
+                          {from._id == user?._id ? "You" : from.name}
+                        </p>
+                      </div>
+                      <p className="message-content">{content}</p>
+                      <p className="message-timestamp-left">{time}</p>
                     </div>
+                  </div>
+                    
                   )
                 )}
-              </div>;
-            }
-          )} */}
+              </div>
+          )
+          )}
+          <div ref={messageEndRef}/>
       </div>
       <Form onSubmit={handleSubmit}>
         <Row>

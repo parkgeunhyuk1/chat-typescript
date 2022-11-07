@@ -4,7 +4,7 @@ import { useSelector } from "react-redux";
 import { AppContext } from "../context/AppContext";
 
 const Sidebar = () => {
-  const user = useSelector((state: any) => state.user);
+  const user = useSelector((state: {user:{}}) => state.user);
   const {
     socket,
     setMembers,
@@ -46,7 +46,7 @@ const Sidebar = () => {
         ))}
       </ListGroup>
       <h2>Members</h2>
-      {members.map((member: any) => (
+      {members.map((member: {id:string,name:string}) => (
         <ListGroup.Item key={member.id} style={{ cursor: "pointer" }}>
           {member.name}
         </ListGroup.Item>
