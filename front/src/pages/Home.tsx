@@ -1,7 +1,9 @@
 import React from "react";
 import { Row, Col, Button } from "react-bootstrap";
+import { useNavigate } from "react-router-dom";
 import './home.css'
 const Home = () => {
+  const navigate=useNavigate();
   return (
     <Row>
       <Col
@@ -11,7 +13,9 @@ const Home = () => {
         <div>
           <h1>Share the world with your frineds</h1>
           <p>Chat App lets you connect with the world</p>
-          <Button variant="success">
+          <Button onClick={()=>{
+            navigate('/chat')
+          }} variant="success">
             Get started<i className="fas fa-comments home-message-icon"></i>
           </Button>
         </div>

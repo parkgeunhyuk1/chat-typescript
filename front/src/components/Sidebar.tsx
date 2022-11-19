@@ -2,7 +2,7 @@ import React, { useContext, useEffect } from "react";
 import { Col, ListGroup, Row } from "react-bootstrap";
 import { useSelector } from "react-redux";
 import { AppContext } from "../context/AppContext";
-import './sidebar.css'
+import './Sidebar.css'
 const Sidebar = () => {
   const user = useSelector(
     (state: { user: { newMessages: any; _id: string } }) => state.user
